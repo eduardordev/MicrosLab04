@@ -40,7 +40,6 @@ string const clave = "P0L1N0M14L";
 int counter = 0;
 pthread_cond_t fullstack, emptystack;
 pthread_mutex_t mutexf;
-sem_t count_sem, barrier_sem, done_sem;
 
 string readFile(){
 	ifstream fileStream(filetxt, ios::in);
@@ -93,7 +92,7 @@ void *cifrarTxt(void *arg){
 	
 	int a=0;
 	//For que incluye los ultimos cuatro caracteres del string (Ronda 1)
-	for(int i=bufferLength-4;i<bufferL;i++){
+	for(int i=bufferL-4;i<bufferL;i++){
 		str1 += (aStr[i]^clave[a]);
 		a++;
 	}
@@ -103,7 +102,7 @@ void *cifrarTxt(void *arg){
 	//Ronda 2
 	aStr="";
 	a=0;
-	for(int i=bufferLength-4;i<bufferL;i++){
+	for(int i=bufferL-4;i<bufferL;i++){
 		aStr += (str1[i]^clave[a]);
 	}
 	for(int j=0;j<bufferL-4;j++){
@@ -112,7 +111,7 @@ void *cifrarTxt(void *arg){
 	//Ronda 3
 	str1="";
 	a=0;
-	for(int i=bufferLength-4;i<bufferL;i++){
+	for(int i=bufferL-4;i<bufferL;i++){
 		str1 += (aStr[i]^clave[a]);
 	}
 	for(int j=0;j<bufferL-4;j++){
@@ -121,7 +120,7 @@ void *cifrarTxt(void *arg){
 	//Ronda 4
 	aStr="";
 	a=0;
-	for(int i=bufferLength-4;i<bufferL;i++){
+	for(int i=bufferL-4;i<bufferL;i++){
 		aStr += (str1[i]^clave[a]);
 	}
 	for(int j=0;j<bufferL-4;j++){
@@ -192,21 +191,21 @@ int main()
 				for(int i=0;i<letras;i++){
 					rp = 0;
 					
-					if((a+bufferL-1)>(txt.length()-1)){
-						while(rp < bufferL && (a+rp)<(txt.length()-1)){
-							temp += txt[a+rp];
+					if((cnt+bufferL-1)>(txt.length()-1)){
+						while(rp < bufferL && (cnt+rp)<(txt.length()-1)){
+							temp += txt[cnt+rp];
 							rp++;
 						}
 					}
 					else{
 						while(rp < bufferL){
-							temp += txt[a+rp];
+							temp += txt[cnt+rp];
 							rp++;
 						}
 					}
 					
 					clct[i] = temp;
-					a+=bufferL;
+					cnt+=bufferL;
 					temp = "";
 				}
 				
